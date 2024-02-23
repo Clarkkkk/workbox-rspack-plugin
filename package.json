@@ -1,0 +1,54 @@
+{
+  "name": "vite-vanilla-ts-lib-starter",
+  "description": "Typescript library starter",
+  "version": "0.3.0",
+  "license": "MIT",
+  "author": "Aaron Zhou",
+  "packageManager": "pnpm@8.6.3",
+  "main": "./dist/vite-ts-lib-starter.cjs",
+  "module": "./dist/vite-ts-lib-starter.mjs",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/vite-ts-lib-starter.cjs",
+      "import": "./dist/vite-ts-lib-starter.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "test": "vitest",
+    "test:update": "vitest --update",
+    "test:run": "vitest --run --changed",
+    "test:coverage": "vitest --coverage",
+    "typecheck": "tsc --noEmit --watch --preserveWatchOutput",
+    "format": "eslint --fix --cache src/**/*.{vue,ts}",
+    "prepare": "husky install",
+    "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky",
+    "release": "commit-and-tag-version"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "@vitest/coverage-c8": "^0.33.0",
+    "commit-and-tag-version": "^12.1.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-dts": "^3.7.0",
+    "vitest": "^1.2.0"
+  }
+}
