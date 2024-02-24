@@ -1,3 +1,4 @@
-import './style.css'
+import { GenerateSW, GenerateSWConfig } from './generate-sw'
+import { InjectManifest } from './inject-manifest'
 
-export { sum } from './sum'
+export { GenerateSW, GenerateSWConfig, InjectManifest }
