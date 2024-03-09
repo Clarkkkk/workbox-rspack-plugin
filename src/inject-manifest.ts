@@ -168,11 +168,12 @@ class InjectManifest {
                 if (error) {
                     reject(error)
                 } else {
-                    compilation.warnings = compilation.warnings.concat(
-                        childCompilation?.warnings ?? []
-                    )
-                    compilation.errors = compilation.errors.concat(childCompilation?.errors ?? [])
-
+                    for (const item of childCompilation?.warnings ?? []) {
+                        compilation.warnings.push(item)
+                    }
+                    for (const item of childCompilation?.errors ?? []) {
+                        compilation.errors.push(item)
+                    }
                     resolve()
                 }
             })
