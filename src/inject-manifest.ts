@@ -159,11 +159,9 @@ class InjectManifest {
             }
         }
 
-        new SingleEntryPlugin(
-            parentCompiler.context,
-            this.config.swSrc,
-            this.constructor.name
-        ).apply(childCompiler)
+        new EntryPlugin(parentCompiler.context, this.config.swSrc, this.constructor.name).apply(
+            childCompiler
+        )
 
         await new Promise<void>((resolve, reject) => {
             childCompiler.runAsChild((error, _entries, childCompilation) => {
