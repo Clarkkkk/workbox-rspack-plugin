@@ -1,7 +1,7 @@
 {
-  "name": "vite-vanilla-ts-lib-starter",
-  "description": "Typescript library starter",
-  "version": "0.3.0",
+  "name": "workbox-rspack-plugin",
+  "description": "An Rspack plugin to use workbox",
+  "version": "0.1.0",
   "license": "MIT",
   "author": "Aaron Zhou",
   "packageManager": "pnpm@8.6.3",
@@ -67,6 +67,7 @@
     "vite": "^5.1.4",
     "vite-plugin-dts": "^3.7.3",
     "vitest": "^1.3.1",
-    "webpack": "^5.90.3"
+    "webpack": "^5.90.3",
+    "workbox-precaching": "^7.0.0"
   }
 }

@@ -6,6 +6,6 @@
   https://opensource.org/licenses/MIT.
 */
 
-import {precacheAndRoute} from '../../../packages/workbox-precaching';
+import { precacheAndRoute } from 'workbox-precaching'
 
-precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(self.__WB_MANIFEST)

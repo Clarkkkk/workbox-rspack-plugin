@@ -11,3 +11,11 @@ export async function runWithCallback<T = any, S = any>(
         }
     })
 }
+
+export function isStringMatched(str: unknown, regex: unknown) {
+    if (typeof str === 'string' && regex instanceof RegExp) {
+        return regex.test(str)
+    } else {
+        return undefined
+    }
+}

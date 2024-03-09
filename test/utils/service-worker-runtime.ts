@@ -3,11 +3,7 @@ import { readFile } from 'fs/promises'
 import makeServiceWorkerEnv from 'service-worker-mock'
 import { expect, vi } from 'vitest'
 import vm from 'vm'
-
-// See https://github.com/chaijs/chai/issues/697
-function stringifyFunctionsInArray(arr) {
-    return arr.map((item) => (typeof item === 'function' ? item.toString() : item))
-}
+import { isStringMatched } from './helper'
 
 function setupSpiesAndContextForInjectManifest() {
     const cacheableResponsePluginSpy = vi.fn()
@@ -131,14 +127,6 @@ function setupSpiesAndContextForGenerateSW() {
     return { addEventListener, context, methodsToSpies: workboxContext }
 }
 
-function isStringMatched(str: unknown, regex: unknown) {
-    if (typeof str === 'string' && regex instanceof RegExp) {
-        return regex.test(str)
-    } else {
-        return undefined
-    }
-}
-
 function validateMethodCalls({ methodsToSpies, expectedMethodCalls, context }) {
     expect.addEqualityTesters([isStringMatched])
     for (const [method, spy] of Object.entries(methodsToSpies)) {
@@ -189,7 +177,7 @@ export const validateServiceWorkerRuntime = async ({
 }: {
     addEventListenerValidation?: (...args: any) => any
     entryPoint?: unknown
-    expectedMethodCalls: unknown
+    expectedMethodCalls?: unknown
     swFile?: string
     swString?: string
 }) => {
