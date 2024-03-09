@@ -252,8 +252,9 @@ class InjectManifest {
                 `Please see https://github.com/GoogleChrome/workbox/issues/1790 for ` +
                 `more information.`
 
+            // compilation.warnings is an iterable, not an array
             if (
-                !compilation.warnings.some(
+                ![...compilation.warnings].some(
                     (warning) => warning instanceof Error && warning.message === warningMessage
                 )
             ) {

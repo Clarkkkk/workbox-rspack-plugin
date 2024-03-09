@@ -63,10 +63,10 @@ class GenerateSW {
         compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
             compilation.hooks.processAssets.tapPromise(
                 {
-                    name: this.constructor.name,
+                    name: this.constructor.name
                     // TODO(jeffposnick): This may need to change eventually.
                     // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
-                    stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
+                    // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
                 },
                 () =>
                     this.addAssets(compilation).catch((error: webpack.WebpackError) => {
@@ -91,8 +91,9 @@ class GenerateSW {
                 `Please see https://github.com/GoogleChrome/workbox/issues/1790 for ` +
                 `more information.`
 
+            // compilation.warnings is an iterable, not an array
             if (
-                !compilation.warnings.some(
+                ![...compilation.warnings].some(
                     (warning) => warning instanceof Error && warning.message === warningMessage
                 )
             ) {
