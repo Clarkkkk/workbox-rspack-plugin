@@ -2,7 +2,7 @@
 
 [![NPM version][npm-image]][npm-url] [![NPM Downloads][npm-download]][npm-url] [![License][license]][license-url] [![Minified Size][minified-size]][npm-url] [![Build Status][build-status]][github-actions]
 
-An rspack plugin to use [workbox](https://developer.chrome.com/docs/workbox) in rspack. Both `GenerateSW` and `InjectManifest` are supported. And all the options are the same as the official [`workbox-webpack-plugin`](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin). Note, although it should work in general, there are still problems in some use cases due to rspack's limitation. Check the [tracking issue]() for details.
+An rspack plugin to use [workbox](https://developer.chrome.com/docs/workbox) in rspack. Both `GenerateSW` and `InjectManifest` are supported. And all the options are the same as the official [`workbox-webpack-plugin`](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin). Note, although it should work in general, there are still problems in some use cases due to rspack's limitation. Check the [tracking issue](https://github.com/Clarkkkk/workbox-rspack-plugin/issues/1) for details.
 
 # Install
 
@@ -66,6 +66,10 @@ export default defineConfig({
 ## Options
 
 Check [workbox-webpack-plugin](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin).
+
+## Changelog
+
+Changelog can be found [here](https://github.com/Clarkkkk/workbox-rspack-plugin/blob/main/CHANGELOG.md).
 
 ## Credits
 
