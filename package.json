@@ -4,7 +4,16 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Aaron Zhou",
-  "homepage": "https://github.com/Clarkkkk/workbox-rspack-plugin/tree/main/packages/core#readme",
+  "keywords": [
+    "workbox",
+    "rspack",
+    "rsbuild",
+    "workbox-webpack-plugin",
+    "pwa",
+    "service worker",
+    "manifest"
+  ],
+  "homepage": "https://github.com/Clarkkkk/workbox-rspack-plugin#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Clarkkkk/workbox-rspack-plugin"
