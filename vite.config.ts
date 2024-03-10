@@ -7,7 +7,6 @@ import dts from 'vite-plugin-dts'
 export default defineConfig(({ mode }) => {
     return {
         base: './',
-        assetsInclude: ['**/*.node'],
         build: {
             lib: {
                 entry: {
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
                       dts(),
                       {
                           ...nodeExternals({
-                              deps: false,
+                              deps: true,
                               devDeps: true
                           }),
                           enforce: 'pre'
