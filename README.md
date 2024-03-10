@@ -1,5 +1,7 @@
 # workbox-rspack-plugin
 
+[![NPM version][npm-image]][npm-url] [![NPM Downloads][npm-download]][npm-url] [![License][license]][license-url] [![Minified Size][minified-size]][npm-url] [![Build Status][build-status]][github-actions]
+
 An rspack plugin to use [workbox](https://developer.chrome.com/docs/workbox) in rspack. Both `GenerateSW` and `InjectManifest` are supported. And all the options are the same as the official [`workbox-webpack-plugin`](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin). Note, although it should work in general, there are still problems in some use cases due to rspack's limitation. Check the [tracking issue]() for details.
 
 # Install
@@ -74,3 +76,12 @@ Most of the code comes from Google's workbox [repo](https://github.com/GoogleChr
 If you found it useful somehow, I would be grateful if you could leave a star in the project's GitHub repository.
 
 Thank you.
+
+[npm-url]: https://www.npmjs.com/package/@aaroon/workbox-rspack-plugin
+[npm-image]: https://badge.fury.io/js/@aaroon/workbox-rspack-plugin.svg
+[npm-download]: https://img.shields.io/npm/dw/@aaroon/workbox-rspack-plugin
+[license]: https://img.shields.io/github/license/Clarkkkk/workbox-rspack-plugin
+[license-url]: https://github.com/Clarkkkk/workbox-rspack-plugin/blob/main/LICENSE.md
+[minified-size]: https://img.shields.io/bundlephobia/min/workbox-rspack-plugin
+[build-status]: https://img.shields.io/github/actions/workflow/status/Clarkkkk/workbox-rspack-plugin/.github%2Fworkflows%2Fpublish.yml
+[github-actions]: https://github.com/Clarkkkk/workbox-rspack-plugin/actions

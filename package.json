@@ -4,12 +4,26 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Aaron Zhou",
+  "homepage": "https://github.com/Clarkkkk/workbox-rspack-plugin/tree/main/packages/core#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clarkkkk/workbox-rspack-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/Clarkkkk/workbox-rspack-plugin/issues"
+  },
   "packageManager": "pnpm@8.6.3",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
   "sideEffects": false,
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
