@@ -7,11 +7,10 @@
 */
 
 import type { Compilation, Compiler } from '@rspack/core'
-import { EntryPlugin } from '@rspack/core'
+import { EntryPlugin, sources } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
 import prettyBytes from 'pretty-bytes'
-import webpack from 'webpack'
 import type { WebpackInjectManifestOptions } from 'workbox-build'
 import { escapeRegExp } from 'workbox-build/build/lib/escape-regexp'
 import { replaceAndUpdateSourceMap } from 'workbox-build/build/lib/replace-and-update-source-map'
@@ -26,7 +25,7 @@ const _generatedAssetNames = new Set<string>()
 
 // webpack v4/v5 compatibility:
 // https://github.com/webpack/webpack/issues/11425#issuecomment-686607633
-const { RawSource } = webpack.sources
+const { RawSource } = sources
 
 /**
  * This class supports compiling a service worker file provided via `swSrc`,
@@ -91,7 +90,7 @@ class InjectManifest {
         this.propagateWebpackConfig(compiler)
 
         compiler.hooks.make.tapPromise(this.constructor.name, (compilation) =>
-            this.handleMake(compilation, compiler).catch((error: webpack.WebpackError) => {
+            this.handleMake(compilation, compiler).catch((error: Error) => {
                 compilation.errors.push(error)
             })
         )
@@ -108,7 +107,7 @@ class InjectManifest {
                     // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
                 },
                 () =>
-                    this.addAssets(compilation).catch((error: webpack.WebpackError) => {
+                    this.addAssets(compilation).catch((error: Error) => {
                         compilation.errors.push(error)
                     })
             )
@@ -217,7 +216,7 @@ class InjectManifest {
                     new Error(
                         'compileSrc is false, so the ' +
                             'webpackCompilationPlugins option will be ignored.'
-                    ) as webpack.WebpackError
+                    )
                 )
             }
         }
@@ -248,7 +247,7 @@ class InjectManifest {
                     )
                 })
             ) {
-                compilation.warnings.push(new Error(warningMessage) as webpack.WebpackError)
+                compilation.warnings.push(new Error(warningMessage))
             }
         } else {
             this.alreadyCalled = true

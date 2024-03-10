@@ -7,8 +7,8 @@
 */
 
 import type { Asset, Compilation } from '@rspack/core'
+import { ModuleFilenameHelpers } from '@rspack/core'
 import type { Chunk } from '@rspack/core/dist/Chunk'
-import { ModuleFilenameHelpers } from 'webpack'
 import type {
     FileDetails,
     ManifestEntry,

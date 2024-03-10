@@ -1,6 +1,6 @@
-import type { Compilation, Compiler } from '@rspack/core'
+import { type Compilation, type Compiler } from '@rspack/core'
+import { sources } from '@rspack/core'
 import prettyBytes from 'pretty-bytes'
-import webpack from 'webpack'
 import type { ManifestEntry, WebpackGenerateSWOptions } from 'workbox-build'
 import { bundle } from 'workbox-build/build/lib/bundle'
 import { populateSWTemplate } from 'workbox-build/build/lib/populate-sw-template'
@@ -9,7 +9,7 @@ import { getManifestEntriesFromCompilation } from './lib/get-manifest-entries-fr
 import { getScriptFilesForChunks } from './lib/get-script-files-for-chunks'
 import { relativeToOutputPath } from './lib/relative-to-output-path'
 
-const { RawSource } = webpack.sources
+const { RawSource } = sources
 
 // Used to keep track of swDest files written by *any* instance of this plugin.
 // See https://github.com/GoogleChrome/workbox/issues/2181
@@ -70,7 +70,7 @@ class GenerateSW {
                     // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
                 },
                 () =>
-                    this.addAssets(compilation).catch((error: webpack.WebpackError) => {
+                    this.addAssets(compilation).catch((error: Error) => {
                         compilation.errors.push(error)
                     })
             )
@@ -98,7 +98,7 @@ class GenerateSW {
                     (warning) => warning instanceof Error && warning.message === warningMessage
                 )
             ) {
-                compilation.warnings.push(new Error(warningMessage) as webpack.WebpackError)
+                compilation.warnings.push(new Error(warningMessage))
             }
         } else {
             this.alreadyCalled = true
