@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.2.1    (2024-03-10)
+
+
+## **Bug Fixes**
+
+* dependencies should be externalized ([6d502e6d](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/6d502e6d1171b3ae7f07bef229102ce37d58b163))
+
+
+
 # 0.2.0    (2024-03-10)
 
 
