@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.2.0    (2024-03-10)
+
+
+## **Bug Fixes**
+
+* stages are properies of processAssets in rspack ([afea6aab](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/afea6aab3b04f4ed6be335c395d2e616bfff1641))
+* externalize dev dependencies to reduce the package size ([8151c28f](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/8151c28f0a300aff6d1cf71f77d616c2d6170a47))
+* fix test errors caused by `rollup-plugin-node-externals` ([b63b5e84](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/b63b5e849c45ac321dc131ac06c7669e5639398c))
+
+## **Documentation**
+
+* update README ([61e8334a](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/61e8334a8a063d51c0e841fac68aef9e954256fd))
+
+## **Chores**
+
+* update keywords and homepage ([11119eff](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/11119eff3269d5eee12d1f76ecf5ee8329ccddcf))
+* publish with public access ([c5375374](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/c537537484d823867c0f08458b8c47f8d7113524))
+
+
+
 # 0.1.0    (2024-03-10)
 
 
