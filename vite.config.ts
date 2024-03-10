@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => {
                       dts(),
                       {
                           ...nodeExternals({
-                              deps: false
+                              deps: false,
+                              devDeps: true
                           }),
                           enforce: 'pre'
                       }
