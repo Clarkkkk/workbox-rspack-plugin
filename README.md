@@ -1,58 +1,73 @@
-# vite-vanilla-ts-lib-starter
+# workbox-rspack-plugin
 
-The starter is built on top of Vite 4.x and prepared for writing libraries in TypeScript. It generates a hybrid package - both support for CommonJS and ESM modules.
+An rspack plugin to use [workbox](https://developer.chrome.com/docs/workbox) in rspack. Both `GenerateSW` and `InjectManifest` are supported. And all the options are the same as the official [`workbox-webpack-plugin`](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin). Note, although it should work in general, there are still problems in some use cases due to rspack's limitation. Check the [tracking issue]() for details.
 
-## Features
+# Install
 
-- Hybrid support - CommonJS and ESM modules
-- IIFE bundle for direct browser support without bundler
-- Typings bundle
-- ESLint - scripts linter
-- Stylelint - styles linter
-- Prettier - formatter
-- Vitest - test framework
-- Husky + lint-staged - pre-commit git hook set up for formatting
-
-## GitHub Template
-
-This is a template repo. Click the green [Use this template](https://github.com/kbysiec/vite-vanilla-ts-lib-starter/generate) button to get started.
-
-## Clone to local
-
-If you prefer to do it manually with the cleaner git history
-
-```bash
-git clone https://github.com/kbysiec/vite-vanilla-ts-lib-starter.git
-cd vite-vanilla-ts-lib-starter
-npm i
+```sh
+npm i -D @aaroon/workbox-rspack-plugin
 ```
 
-## Checklist
+Or
 
-When you use this template, update the following:
+```sh
+pnpm i -D @aaroon/workbox-rspack-plugin
+```
 
-- Remove `.git` directory and run `git init` to clean up the history
-- Change the name in `package.json` - it will be the name of the IIFE bundle global variable and bundle files name (`.cjs`, `.mjs`, `.iife.js`, `d.ts`)
-- Change the author name in `LICENSE`
-- Clean up the `README` and `CHANGELOG` files
-
-And, enjoy :)
+```sh
+yarn add -D @aaroon/workbox-rspack-plugin
+```
 
 ## Usage
 
-The starter contains the following scripts:
+```js
+import { GenerateSW, InjectManifest } from '@aaroon/workbox-rspack-plugin'
+/**
+ * @type import('@rspack/cli').Configuration}
+ */
+export default {
+    plugins: [
+        new GenerateSW({
+            // options
+        }),
+        // or
+        new InjectManifest({
+            // options
+        })
+    ]
+}
+```
 
-- `dev` - starts dev server
-- `build` - generates the following bundles: CommonJS (`.cjs`) ESM (`.mjs`) and IIFE (`.iife.js`). The name of bundle is automatically taken from `package.json` name property
-- `test` - starts vitest and runs all tests
-- `test:coverage` - starts vitest and run all tests with code coverage report
-- `lint:scripts` - lint `.ts` files with eslint
-- `lint:styles` - lint `.css` and `.scss` files with stylelint
-- `format:scripts` - format `.ts`, `.html` and `.json` files with prettier
-- `format:styles` - format `.cs` and `.scss` files with stylelint
-- `format` - format all with prettier and stylelint
-- `prepare` - script for setting up husky pre-commit hook
-- `uninstall-husky` - script for removing husky from repository
+If you're using Rsbuild, use it in `tools.rspack.plugins`:
+
+```js
+import { defineConfig } from '@rsbuild/core'
+import { GenerateSW, InjectManifest } from 'workbox-rspack-plugin'
+
+export default defineConfig({
+    tools: {
+        rspack: {
+            plugins: [
+                new GenerateSW({
+                    // options
+                }),
+                // or
+                new InjectManifest({
+                    // options
+                })
+            ]
+        }
+    }
+})
+```
+
+## Options
+
+Check [workbox-webpack-plugin](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin).
+
+## Credits
+
+Most of the code comes from Google's workbox [repo](https://github.com/GoogleChrome/workbox), I just make it compatible with Rspack.
 
 ## Acknowledgment
 
