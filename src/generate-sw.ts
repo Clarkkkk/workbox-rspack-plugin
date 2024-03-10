@@ -97,7 +97,7 @@ class GenerateSW {
                     (warning) => warning instanceof Error && warning.message === warningMessage
                 )
             ) {
-                compilation.warnings.push(Error(warningMessage) as webpack.WebpackError)
+                compilation.warnings.push(new Error(warningMessage) as webpack.WebpackError)
             }
         } else {
             this.alreadyCalled = true

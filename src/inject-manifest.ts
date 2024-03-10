@@ -6,6 +6,7 @@
   https://opensource.org/licenses/MIT.
 */
 
+import { EntryPlugin } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
 import prettyBytes from 'pretty-bytes'
@@ -14,15 +15,13 @@ import type { WebpackInjectManifestOptions } from 'workbox-build'
 import { escapeRegExp } from 'workbox-build/build/lib/escape-regexp'
 import { replaceAndUpdateSourceMap } from 'workbox-build/build/lib/replace-and-update-source-map'
 import { validateWebpackInjectManifestOptions } from 'workbox-build/build/lib/validate-options'
+import { extractMessage } from './lib/extract-message'
 import { getManifestEntriesFromCompilation } from './lib/get-manifest-entries-from-compilation'
 import { getSourcemapAssetName } from './lib/get-sourcemap-asset-name'
 import { relativeToOutputPath } from './lib/relative-to-output-path'
 // Used to keep track of swDest files written by *any* instance of this plugin.
 // See https://github.com/GoogleChrome/workbox/issues/2181
 const _generatedAssetNames = new Set<string>()
-
-// SingleEntryPlugin in v4 was renamed to EntryPlugin in v5.
-const SingleEntryPlugin = webpack.EntryPlugin || webpack.SingleEntryPlugin
 
 // webpack v4/v5 compatibility:
 // https://github.com/webpack/webpack/issues/11425#issuecomment-686607633
@@ -96,33 +95,23 @@ class InjectManifest {
             })
         )
 
-        // webpack v4/v5 compatibility:
-        // https://github.com/webpack/webpack/issues/11425#issuecomment-690387207
-        if (webpack.version?.startsWith('4.')) {
-            compiler.hooks.emit.tapPromise(this.constructor.name, (compilation) =>
-                this.addAssets(compilation).catch((error: webpack.WebpackError) => {
-                    compilation.errors.push(error)
-                })
+        const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
+        // Specifically hook into thisCompilation, as per
+        // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
+        compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
+            compilation.hooks.processAssets.tapPromise(
+                {
+                    name: this.constructor.name
+                    // TODO(jeffposnick): This may need to change eventually.
+                    // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
+                    // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
+                },
+                () =>
+                    this.addAssets(compilation).catch((error: webpack.WebpackError) => {
+                        compilation.errors.push(error)
+                    })
             )
-        } else {
-            const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
-            // Specifically hook into thisCompilation, as per
-            // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
-            compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
-                compilation.hooks.processAssets.tapPromise(
-                    {
-                        name: this.constructor.name,
-                        // TODO(jeffposnick): This may need to change eventually.
-                        // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
-                        stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
-                    },
-                    () =>
-                        this.addAssets(compilation).catch((error: webpack.WebpackError) => {
-                            compilation.errors.push(error)
-                        })
-                )
-            })
-        }
+        })
     }
 
     /**
@@ -252,10 +241,14 @@ class InjectManifest {
                 `more information.`
 
             // compilation.warnings is an iterable, not an array
+            // warning is not an Error object
             if (
-                ![...compilation.warnings].some(
-                    (warning) => warning instanceof Error && warning.message === warningMessage
-                )
+                ![...compilation.warnings].flat().some((warning) => {
+                    return (
+                        typeof warning.message === 'string' &&
+                        extractMessage(warning.message) === warningMessage
+                    )
+                })
             ) {
                 compilation.warnings.push(new Error(warningMessage) as webpack.WebpackError)
             }

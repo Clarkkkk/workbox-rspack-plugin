@@ -2,7 +2,6 @@ import { rspack } from '@rspack/core'
 import { globby } from 'globby'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { fs } from 'memfs'
-import moduleAlias from 'module-alias'
 import { join, resolve } from 'pathe'
 import { temporaryDirectory } from 'tempy'
 import { describe, expect, it } from 'vitest'
@@ -17,9 +16,6 @@ try {
 } catch (error) {
     // Ignore if require.resolve() fails.
 }
-
-moduleAlias.addAlias('html-webpack-plugin', resolve('node_modules', 'html-webpack-plugin-v5'))
-moduleAlias.addAlias('webpack', resolve('node_modules', 'webpack-v5'))
 
 describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
     const WEBPACK_ENTRY_FILENAME = 'webpackEntry.js'
