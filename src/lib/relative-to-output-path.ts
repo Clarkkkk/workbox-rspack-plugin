@@ -1,5 +1,5 @@
+import type { Compilation } from '@rspack/core'
 import { normalize, relative, resolve } from 'pathe'
-import type { Compilation } from 'webpack'
 
 /**
  * @param {Object} compilation The webpack compilation.

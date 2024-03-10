@@ -1,3 +1,4 @@
+import type { Compilation, Compiler } from '@rspack/core'
 import prettyBytes from 'pretty-bytes'
 import webpack from 'webpack'
 import type { ManifestEntry, WebpackGenerateSWOptions } from 'workbox-build'
@@ -35,7 +36,7 @@ class GenerateSW {
      *
      * @private
      */
-    propagateWebpackConfig(compiler: webpack.Compiler): void {
+    propagateWebpackConfig(compiler: Compiler): void {
         // Because this.config is listed last, properties that are already set
         // there take precedence over derived properties from the compiler.
         this.config = Object.assign(
@@ -52,12 +53,12 @@ class GenerateSW {
      *
      * @private
      */
-    apply(compiler: webpack.Compiler): void {
+    apply(compiler: Compiler): void {
         this.propagateWebpackConfig(compiler)
 
         // webpack v4/v5 compatibility:
         // https://github.com/webpack/webpack/issues/11425#issuecomment-690387207
-        const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
+        // const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
         // Specifically hook into thisCompilation, as per
         // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
         compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
@@ -81,7 +82,7 @@ class GenerateSW {
      *
      * @private
      */
-    async addAssets(compilation: webpack.Compilation): Promise<void> {
+    async addAssets(compilation: Compilation): Promise<void> {
         // See https://github.com/GoogleChrome/workbox/issues/1790
         if (this.alreadyCalled) {
             const warningMessage =

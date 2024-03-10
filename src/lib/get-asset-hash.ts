@@ -6,8 +6,8 @@
   https://opensource.org/licenses/MIT.
 */
 
+import type { Asset } from '@rspack/core'
 import crypto from 'crypto'
-import type { Asset } from 'webpack'
 
 /**
  * @param {Asset} asset

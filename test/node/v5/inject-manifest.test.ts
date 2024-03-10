@@ -1,12 +1,10 @@
+import type { Configuration } from '@rspack/core'
 import { rspack } from '@rspack/core'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
 import fse from 'fs-extra'
 import { globby } from 'globby'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { join, resolve } from 'pathe'
 import { temporaryDirectory } from 'tempy'
 import { describe, expect, it } from 'vitest'
-import type webpack from 'webpack'
 import { InjectManifest } from '../../../src/inject-manifest'
 import {
     isStringMatched,
@@ -52,7 +50,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         invalid: 'invalid'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -80,7 +78,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swSrc: join(__dirname, '..', '..', 'static', 'bad-multiple-injection.js')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -112,7 +110,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -165,7 +163,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         chunks: ['entry1', 'entry2']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -223,7 +221,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         chunks: ['main']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -276,7 +274,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         excludeChunks: ['entry3']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -330,7 +328,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         excludeChunks: ['entry2', 'entry3']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -381,7 +379,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -444,7 +442,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -523,7 +521,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -582,7 +580,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -642,7 +640,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -696,7 +694,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -736,7 +734,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -776,7 +774,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -829,7 +827,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         exclude: []
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -883,7 +881,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         include: [/.html$/]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -946,7 +944,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         exclude: [/index/]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -996,7 +994,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: resolve(join(outputDir, 'service-worker.js'))
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1045,7 +1043,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         chunks: ['entry1', 'doesNotExist']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1107,7 +1105,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         maximumFileSizeToCacheInBytes: 14 * 1024
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1194,7 +1192,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1241,7 +1239,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         dontCacheBustURLsMatching: /\.[0-9a-f]{20}\./
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1289,7 +1287,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         }
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1340,7 +1338,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         ]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1405,7 +1403,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         ]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1453,7 +1451,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swSrc: join(__dirname, '..', '..', 'static', 'sw.ts')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1481,7 +1479,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             for (const i of [1, 2, 3]) {
@@ -1531,7 +1529,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'service-worker2.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             for (const i of [1, 2, 3]) {
@@ -1586,7 +1584,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swDest: 'sw2.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1653,7 +1651,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swSrc: join(__dirname, '..', '..', 'static', 'sw-src.js')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1703,7 +1701,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         webpackCompilationPlugins: [{}]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1732,7 +1730,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swSrc: join(__dirname, '..', '..', 'static', 'injected-manifest.json')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1767,7 +1765,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         swSrc: join(__dirname, '..', '..', 'static', 'injected-manifest.js')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))

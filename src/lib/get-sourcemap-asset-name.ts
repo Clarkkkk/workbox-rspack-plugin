@@ -1,5 +1,5 @@
+import type { Compilation } from '@rspack/core'
 import { dirname, join, normalize } from 'pathe'
-import type { Compilation } from 'webpack'
 import { getSourceMapURL } from 'workbox-build/build/lib/get-source-map-url'
 
 /**

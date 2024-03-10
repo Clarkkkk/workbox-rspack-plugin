@@ -1,5 +1,5 @@
 {
-  "name": "workbox-rspack-plugin",
+  "name": "@aaroon/workbox-rspack-plugin",
   "description": "An Rspack plugin to use workbox",
   "version": "0.1.0",
   "license": "MIT",

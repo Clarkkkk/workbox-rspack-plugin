@@ -1,11 +1,10 @@
+import type { Configuration } from '@rspack/core'
 import { rspack } from '@rspack/core'
 import { globby } from 'globby'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { fs } from 'memfs'
 import { join, resolve } from 'pathe'
 import { temporaryDirectory } from 'tempy'
 import { describe, expect, it } from 'vitest'
-import type webpack from 'webpack'
 import { GenerateSW } from '../../../src/generate-sw'
 import { runWithCallback, validateServiceWorkerRuntime, webpackBuildCheck } from '../../utils'
 import CreateWebpackAssetPlugin from './lib/create-webpack-asset-plugin'
@@ -39,7 +38,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         invalid: 'invalid'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
 
@@ -68,7 +67,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     path: outputDir
                 },
                 plugins: [new GenerateSW()]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -119,7 +118,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         importScriptsViaChunks: ['imported', 'INVALID_CHUNK_NAME']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -176,7 +175,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         ]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -242,7 +241,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         chunks: ['entry1', 'entry2']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -298,7 +297,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         chunks: ['main']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -349,7 +348,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         excludeChunks: ['entry3']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -401,7 +400,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         excludeChunks: ['entry2', 'entry3']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -445,8 +444,8 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     filename: '[name]-[chunkhash].js',
                     path: outputDir
                 },
-                plugins: [new HtmlWebpackPlugin(), new GenerateSW()]
-            } satisfies webpack.Configuration
+                plugins: [new rspack.HtmlRspackPlugin(), new GenerateSW()]
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -506,7 +505,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     }),
                     new GenerateSW()
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -585,7 +584,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     new CreateWebpackAssetPlugin('not-ignored.js'),
                     new GenerateSW()
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -636,7 +635,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         exclude: []
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -688,7 +687,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         include: [/.html$/]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -749,7 +748,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         exclude: [/index/]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -799,7 +798,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         swDest: resolve(join(outputDir, 'service-worker.js'))
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -846,7 +845,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         chunks: ['entry1', 'doesNotExist']
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -906,7 +905,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         maximumFileSizeToCacheInBytes: 14 * 1024
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -991,7 +990,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     path: outputDir
                 },
                 plugins: [new GenerateSW()]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1037,9 +1036,10 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     path: outputDir
                 },
                 plugins: [new GenerateSW()]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
+            // @ts-expect-error Type 'IFs' is missing the following properties from type 'typeof import("fs")': StatsFs, Dir
             compiler.outputFileSystem = fs
 
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1085,7 +1085,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                     path: outputDir
                 },
                 plugins: [new GenerateSW()]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             for (const i of [1, 2, 3]) {
@@ -1136,7 +1136,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         swDest: 'sw2.js'
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1202,7 +1202,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         inlineWorkboxRuntime: true
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1231,7 +1231,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         sourcemap: true
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1257,7 +1257,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         swDest: join('sub', 'directory', 'service-worker.js')
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1287,7 +1287,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         dontCacheBustURLsMatching: /\.[0-9a-f]{20}\./
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1333,7 +1333,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         }
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
@@ -1396,7 +1396,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         ]
                     })
                 ]
-            } satisfies webpack.Configuration
+            } satisfies Configuration
 
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))

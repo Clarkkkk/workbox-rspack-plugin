@@ -6,6 +6,7 @@
   https://opensource.org/licenses/MIT.
 */
 
+import type { Compilation, Compiler } from '@rspack/core'
 import { EntryPlugin } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
@@ -25,7 +26,7 @@ const _generatedAssetNames = new Set<string>()
 
 // webpack v4/v5 compatibility:
 // https://github.com/webpack/webpack/issues/11425#issuecomment-686607633
-const { RawSource } = webpack.sources || require('webpack-sources')
+const { RawSource } = webpack.sources
 
 /**
  * This class supports compiling a service worker file provided via `swSrc`,
@@ -68,7 +69,7 @@ class InjectManifest {
      *
      * @private
      */
-    propagateWebpackConfig(compiler: webpack.Compiler): void {
+    propagateWebpackConfig(compiler: Compiler): void {
         // Because this.config is listed last, properties that are already set
         // there take precedence over derived properties from the compiler.
         this.config = Object.assign(
@@ -86,7 +87,7 @@ class InjectManifest {
      *
      * @private
      */
-    apply(compiler: webpack.Compiler): void {
+    apply(compiler: Compiler): void {
         this.propagateWebpackConfig(compiler)
 
         compiler.hooks.make.tapPromise(this.constructor.name, (compilation) =>
@@ -95,7 +96,7 @@ class InjectManifest {
             })
         )
 
-        const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
+        // const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
         // Specifically hook into thisCompilation, as per
         // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
         compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
@@ -121,8 +122,8 @@ class InjectManifest {
      * @private
      */
     async performChildCompilation(
-        compilation: webpack.Compilation,
-        parentCompiler: webpack.Compiler
+        compilation: Compilation,
+        parentCompiler: Compiler
     ): Promise<void> {
         const outputOptions = {
             path: parentCompiler.options.output.path,
@@ -153,7 +154,7 @@ class InjectManifest {
         )
 
         await new Promise<void>((resolve, reject) => {
-            childCompiler.runAsChild((error, _entries, childCompilation) => {
+            childCompiler.runAsChild((error: any, _entries: any, childCompilation: any) => {
                 if (error) {
                     reject(error)
                 } else {
@@ -175,7 +176,7 @@ class InjectManifest {
      *
      * @private
      */
-    addSrcToAssets(compilation: webpack.Compilation, parentCompiler: webpack.Compiler): void {
+    addSrcToAssets(compilation: Compilation, parentCompiler: Compiler): void {
         // eslint-disable-next-line
         const source = (parentCompiler.inputFileSystem as any).readFileSync(this.config.swSrc)
         compilation.emitAsset(this.config.swDest!, new RawSource(source))
@@ -187,10 +188,7 @@ class InjectManifest {
      *
      * @private
      */
-    async handleMake(
-        compilation: webpack.Compilation,
-        parentCompiler: webpack.Compiler
-    ): Promise<void> {
+    async handleMake(compilation: Compilation, parentCompiler: Compiler): Promise<void> {
         try {
             this.config = validateWebpackInjectManifestOptions(this.config)
         } catch (error) {
@@ -230,7 +228,7 @@ class InjectManifest {
      *
      * @private
      */
-    async addAssets(compilation: webpack.Compilation): Promise<void> {
+    async addAssets(compilation: Compilation): Promise<void> {
         // See https://github.com/GoogleChrome/workbox/issues/1790
         if (this.alreadyCalled) {
             const warningMessage =
@@ -245,7 +243,7 @@ class InjectManifest {
             if (
                 ![...compilation.warnings].flat().some((warning) => {
                     return (
-                        typeof warning.message === 'string' &&
+                        typeof warning?.message === 'string' &&
                         extractMessage(warning.message) === warningMessage
                     )
                 })
@@ -313,14 +311,15 @@ class InjectManifest {
                 searchString: config.injectionPoint!
             })
 
-            compilation.updateAsset(sourcemapAssetName, new RawSource(map))
-            compilation.updateAsset(config.swDest!, new RawSource(source))
+            compilation.updateAsset(sourcemapAssetName, new RawSource(map), {})
+            compilation.updateAsset(config.swDest!, new RawSource(source), {})
         } else {
             // If there's no sourcemap associated with swDest, a simple string
             // replacement will suffice.
             compilation.updateAsset(
                 config.swDest!,
-                new RawSource(swAssetString.replace(config.injectionPoint!, manifestString))
+                new RawSource(swAssetString.replace(config.injectionPoint!, manifestString)),
+                {}
             )
         }
 

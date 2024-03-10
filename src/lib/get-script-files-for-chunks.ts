@@ -1,5 +1,5 @@
+import type { Compilation } from '@rspack/core'
 import { extname } from 'pathe'
-import type { Compilation, WebpackError } from 'webpack'
 import { resolveWebpackURL } from './resolve-webpack-url'
 
 export function getScriptFilesForChunks(
@@ -24,7 +24,7 @@ export function getScriptFilesForChunks(
                 new Error(
                     `${chunkName} was provided to ` +
                         `importScriptsViaChunks, but didn't match any named chunks.`
-                ) as WebpackError
+                )
             )
         }
     }
@@ -34,7 +34,7 @@ export function getScriptFilesForChunks(
             new Error(
                 `There were no assets matching ` +
                     `importScriptsViaChunks: [${chunkNames.join(' ')}].`
-            ) as WebpackError
+            )
         )
     }
 

@@ -6,7 +6,8 @@
   https://opensource.org/licenses/MIT.
 */
 
-import type { Asset, Chunk, Compilation, WebpackError } from 'webpack'
+import type { Asset, Compilation } from '@rspack/core'
+import type { Chunk } from '@rspack/core/dist/Chunk'
 import { ModuleFilenameHelpers } from 'webpack'
 import type {
     FileDetails,
@@ -68,14 +69,15 @@ function getNamesOfAssetsInChunkOrGroup(
     compilation: Compilation,
     chunkOrGroup: string
 ): Array<string> | null {
-    const chunkGroup =
-        compilation.namedChunkGroups && compilation.namedChunkGroups.get(chunkOrGroup)
+    // rspack does not have `namedChunkGroups` on `compilation`
+    const chunkGroup = undefined
+    // compilation.namedChunkGroups && compilation.namedChunkGroups.get(chunkOrGroup)
     if (chunkGroup) {
-        const assetNames = []
-        for (const chunk of chunkGroup.chunks) {
-            assetNames.push(...getNamesOfAssetsInChunk(chunk))
-        }
-        return assetNames
+        // const assetNames = []
+        // for (const chunk of chunkGroup.chunks) {
+        //     assetNames.push(...getNamesOfAssetsInChunk(chunk))
+        // }
+        // return assetNames
     } else {
         const chunk = compilation.namedChunks && compilation.namedChunks.get(chunkOrGroup)
         if (chunk) {
@@ -94,7 +96,7 @@ function getNamesOfAssetsInChunkOrGroup(
  * @return {Array<string>}
  * @private
  */
-function getNamesOfAssetsInChunk(chunk: Chunk): Array<string> {
+function getNamesOfAssetsInChunk(chunk: Readonly<Chunk>): Array<string> {
     const assetNames: Array<string> = []
 
     assetNames.push(...chunk.files)
@@ -141,7 +143,7 @@ function filterAssets(
                         `The chunk '${name}' was ` +
                             `provided in your Workbox chunks config, but was not found in the ` +
                             `compilation.`
-                    ) as WebpackError
+                    )
                 )
             }
         }
@@ -225,7 +227,7 @@ export async function getManifestEntriesFromCompilation(
 
     // See https://github.com/GoogleChrome/workbox/issues/2790
     for (const warning of warnings) {
-        compilation.warnings.push(new Error(warning) as WebpackError)
+        compilation.warnings.push(new Error(warning))
     }
 
     // Ensure that the entries are properly sorted by URL.
