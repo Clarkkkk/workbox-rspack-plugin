@@ -359,8 +359,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
     })
 
     describe(`[workbox-webpack-plugin] html-webpack-plugin and a single chunk`, function () {
-        // rspack bug
-        it.skip(`should work when called without any parameters`, async function () {
+        it(`should work when called without any parameters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -672,7 +671,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
         // See https://github.com/GoogleChrome/workbox/issues/2729
         // needs investigation for `extractComments`
         it.skip(`should produce valid JavaScript when eval-cheap-source-map and minimization are used`, async function () {
-            const outputDir = resolve('./dist') // temporaryDirectory()
+            const outputDir = temporaryDirectory()
 
             const config = {
                 mode: 'development',
@@ -1384,7 +1383,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         manifestTransforms: [
                             (manifest, compilation) => {
                                 expect(manifest).to.have.lengthOf(1)
-                                expect(manifest[0].size).to.eql(1420)
+                                expect(manifest[0].size).to.eql(398)
                                 expect(manifest[0].url.startsWith('main.')).toBeTruthy()
                                 expect(manifest[0].revision).toBe(null)
                                 expect(compilation).toBeTruthy()

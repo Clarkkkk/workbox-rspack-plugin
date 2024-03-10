@@ -62,7 +62,8 @@ class GenerateSW {
         // Specifically hook into thisCompilation, as per
         // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
         compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
-            compilation.hooks.processAssets.tapPromise(
+            // https://github.com/web-infra-dev/rspack/issues/5399
+            compilation.hooks.processAssets.stageOptimizeHash.tapPromise(
                 {
                     name: this.constructor.name
                     // TODO(jeffposnick): This may need to change eventually.

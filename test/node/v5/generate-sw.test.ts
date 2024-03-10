@@ -274,7 +274,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             })
         })
 
-        // compilation.namedChunks.get(chunkOrGroup) does not include the splitted chunk
+        // compilation.namedChunks.get(chunkOrGroup) does not include the splitted chunk because no namedChunkGroups
         it.skip(`should honor the 'chunks' allowlist config, including children created via SplitChunksPlugin`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
@@ -431,8 +431,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
     })
 
     describe(`[workbox-webpack-plugin] html-webpack-plugin and a single chunk`, function () {
-        // compilation.getAssets() does not include html
-        it.skip(`should work when called without any parameters`, async function () {
+        it(`should work when called without any parameters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -1377,7 +1376,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         manifestTransforms: [
                             (manifest, compilation) => {
                                 expect(manifest).to.have.lengthOf(1)
-                                expect(manifest[0].size).to.eql(1420)
+                                expect(manifest[0].size).to.eql(398)
                                 expect(manifest[0].url.startsWith('main.')).toBe(true)
                                 expect(manifest[0].revision).toBe(null)
                                 expect(compilation).toBeTruthy()
