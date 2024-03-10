@@ -12,7 +12,7 @@ module.exports = {
     },
     plugins: ['@typescript-eslint', 'simple-import-sort'],
     rules: {
-        indent: ['error', 4, { SwitchCase: 1 }],
+        indent: 'off',
         'no-console': ['warn', { allow: ['warn', 'error'] }],
         'consistent-return': 'error',
         'space-before-function-paren': [
