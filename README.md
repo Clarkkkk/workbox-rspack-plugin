@@ -65,7 +65,7 @@ export default defineConfig({
 
 ## Options
 
-Check [workbox-webpack-plugin](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin).
+Same as [workbox-webpack-plugin](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin).
 
 ## Changelog
 
@@ -82,10 +82,10 @@ If you found it useful somehow, I would be grateful if you could leave a star in
 Thank you.
 
 [npm-url]: https://www.npmjs.com/package/@aaroon/workbox-rspack-plugin
-[npm-image]: https://badge.fury.io/js/@aaroon/workbox-rspack-plugin.svg
+[npm-image]: https://badge.fury.io/js/@aaroon%2Fworkbox-rspack-plugin.svg
 [npm-download]: https://img.shields.io/npm/dw/@aaroon/workbox-rspack-plugin
 [license]: https://img.shields.io/github/license/Clarkkkk/workbox-rspack-plugin
 [license-url]: https://github.com/Clarkkkk/workbox-rspack-plugin/blob/main/LICENSE.md
-[minified-size]: https://img.shields.io/bundlephobia/min/workbox-rspack-plugin
+[minified-size]: https://img.shields.io/npm/unpacked-size/%40aaroon%2Fworkbox-rspack-plugin
 [build-status]: https://img.shields.io/github/actions/workflow/status/Clarkkkk/workbox-rspack-plugin/.github%2Fworkflows%2Fpublish.yml
 [github-actions]: https://github.com/Clarkkkk/workbox-rspack-plugin/actions
