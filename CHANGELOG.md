@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.2.2    (2024-03-13)
+
+
+## **Bug Fixes**
+
+* should use `entrypoints` to get the chunkGroup of an entrypoint in rspack ([628f89cf](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/628f89cfb49c557f9c5ee38bafff0e0e51196b7a))
+
+## **Documentation**
+
+* update README ([51faa538](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/51faa538cf748e60e83bc0c44beedbaea69751e6))
+
+
+
 # 0.2.1    (2024-03-10)
 
 
