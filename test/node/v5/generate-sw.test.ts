@@ -274,8 +274,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             })
         })
 
-        // compilation.namedChunks.get(chunkOrGroup) does not include the splitted chunk because no namedChunkGroups
-        it.skip(`should honor the 'chunks' allowlist config, including children created via SplitChunksPlugin`, async function () {
+        it(`should honor the 'chunks' allowlist config, including children created via SplitChunksPlugin`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',

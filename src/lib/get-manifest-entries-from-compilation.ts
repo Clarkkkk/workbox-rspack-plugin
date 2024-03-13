@@ -70,14 +70,16 @@ function getNamesOfAssetsInChunkOrGroup(
     chunkOrGroup: string
 ): Array<string> | null {
     // rspack does not have `namedChunkGroups` on `compilation`
-    const chunkGroup = undefined
-    // compilation.namedChunkGroups && compilation.namedChunkGroups.get(chunkOrGroup)
+    // it uses `entrypoints` to get the chunkGroup instead
+    // https://github.com/web-infra-dev/rspack/issues/5908
+    const chunkGroup = compilation.entrypoints.get(chunkOrGroup)
+    // const chunkGroup = compilation.namedChunkGroups && compilation.namedChunkGroups.get(chunkOrGroup)
     if (chunkGroup) {
-        // const assetNames = []
-        // for (const chunk of chunkGroup.chunks) {
-        //     assetNames.push(...getNamesOfAssetsInChunk(chunk))
-        // }
-        // return assetNames
+        const assetNames = []
+        for (const fileName of chunkGroup.getFiles()) {
+            assetNames.push(fileName)
+        }
+        return assetNames
     } else {
         const chunk = compilation.namedChunks && compilation.namedChunks.get(chunkOrGroup)
         if (chunk) {
