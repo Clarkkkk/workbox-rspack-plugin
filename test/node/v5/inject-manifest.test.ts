@@ -675,8 +675,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
         })
 
         // See https://github.com/GoogleChrome/workbox/issues/2729
-        // needs investigation for `extractComments`
-        it.skip(`should produce valid JavaScript when eval-cheap-source-map and minimization are used`, async function () {
+        it(`should produce valid JavaScript when eval-cheap-source-map and minimization are used`, async function () {
             const outputDir = temporaryDirectory()
 
             const config = {
@@ -713,7 +712,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             webpackBuildCheck(webpackError, stats)
 
             const files = await globby('**', { cwd: outputDir })
-            expect(files).to.have.length(4)
+            expect(files).to.have.length(2)
 
             await validateServiceWorkerRuntime({
                 swFile,
