@@ -196,8 +196,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             })
         })
 
-        // rspack bug with splitChunks
-        it.skip(`should honor the 'chunks' allowlist config, including children created via SplitChunksPlugin`, async function () {
+        it(`should honor the 'chunks' allowlist config, including children created via SplitChunksPlugin`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -417,8 +416,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
     })
 
     describe(`[workbox-webpack-plugin] copy-webpack-plugin and a single chunk`, function () {
-        // a bug from rspack.CopyRspackPlugin
-        it.skip(`should work when called without any parameters`, async function () {
+        it(`should work when called without any parameters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -426,6 +424,14 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -682,12 +688,18 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 },
                 devtool: 'eval-cheap-source-map',
                 optimization: {
-                    minimize: true
+                    minimize: true,
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js'],
+                            format: {
+                                comments: 'all'
+                            }
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
-                    new rspack.SwcJsMinimizerRspackPlugin({
-                        extractComments: true
-                    }),
                     new InjectManifest({
                         swSrc: join(__dirname, '..', '..', 'static', 'module-import-sw.js'),
                         swDest: 'service-worker.js'
@@ -855,8 +867,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             })
         })
 
-        // a bug from rspack.CopyRspackPlugin
-        it.skip(`should allow developers to allowlist via include`, async function () {
+        it(`should allow developers to allowlist via include`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -864,6 +875,14 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -917,8 +936,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             })
         })
 
-        // rspack.CopyRspackPlugin bug
-        it.skip(`should allow developers to combine the include and exclude filters`, async function () {
+        it(`should allow developers to combine the include and exclude filters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -926,6 +944,14 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -1076,8 +1102,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             })
         })
 
-        // a bug from rspack.CopyRspackPlugin
-        it.skip(`should add maximumFileSizeToCacheInBytes warnings to compilation.warnings`, async function () {
+        it(`should add maximumFileSizeToCacheInBytes warnings to compilation.warnings`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -1087,6 +1112,14 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 output: {
                     filename: '[name]-[chunkhash].js',
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({

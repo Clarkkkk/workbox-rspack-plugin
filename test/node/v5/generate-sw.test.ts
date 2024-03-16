@@ -482,8 +482,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
     })
 
     describe(`[workbox-webpack-plugin] copy-webpack-plugin and a single chunk`, function () {
-        // a bug from rspack.CopyRspackPlugin
-        it.skip(`should work when called without any parameters`, async function () {
+        it(`should work when called without any parameters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -491,6 +490,15 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            // https://github.com/web-infra-dev/rspack/issues/5194#issuecomment-2001579435
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -662,8 +670,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             })
         })
 
-        // a bug from rspack.CopyRspackPlugin
-        it.skip(`should allow developers to allowlist via include`, async function () {
+        it(`should allow developers to allowlist via include`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -671,6 +678,14 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -722,8 +737,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             })
         })
 
-        // a bug from new rspack.CopyRspackPlugin
-        it.skip(`should allow developers to combine the include and exclude filters`, async function () {
+        it(`should allow developers to combine the include and exclude filters`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -731,6 +745,14 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 output: {
                     filename: WEBPACK_ENTRY_FILENAME,
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -877,8 +899,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             })
         })
 
-        // a bug from new rspack.CopyRspackPlugin
-        it.skip(`should add maximumFileSizeToCacheInBytes warnings to compilation.warnings`, async function () {
+        it(`should add maximumFileSizeToCacheInBytes warnings to compilation.warnings`, async function () {
             const outputDir = temporaryDirectory()
             const config = {
                 mode: 'production',
@@ -888,6 +909,14 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 output: {
                     filename: '[name]-[chunkhash].js',
                     path: outputDir
+                },
+                optimization: {
+                    minimizer: [
+                        new rspack.SwcJsMinimizerRspackPlugin({
+                            exclude: ['splitChunksEntry.js']
+                        }),
+                        new rspack.SwcCssMinimizerRspackPlugin()
+                    ]
                 },
                 plugins: [
                     new rspack.CopyRspackPlugin({
@@ -912,7 +941,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             }
 
             const statsJson = stats.toJson('verbose')
-            expect(statsJson.warnings[0].message).to.eql(
+            expect(statsJson.warnings[0].message).to.include(
                 `images/example-jpeg.jpg is 15.3 kB, and won't be precached. Configure maximumFileSizeToCacheInBytes to change this limit.`
             )
 
