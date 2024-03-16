@@ -23,8 +23,6 @@ import { relativeToOutputPath } from './lib/relative-to-output-path'
 // See https://github.com/GoogleChrome/workbox/issues/2181
 const _generatedAssetNames = new Set<string>()
 
-// webpack v4/v5 compatibility:
-// https://github.com/webpack/webpack/issues/11425#issuecomment-686607633
 const { RawSource } = sources
 
 /**

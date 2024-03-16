@@ -103,7 +103,6 @@ function getNamesOfAssetsInChunk(chunk: Readonly<Chunk>): Array<string> {
 
     assetNames.push(...chunk.files)
 
-    // This only appears to be set in webpack v5.
     if (chunk.auxiliaryFiles) {
         assetNames.push(...chunk.auxiliaryFiles)
     }
