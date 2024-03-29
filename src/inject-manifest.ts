@@ -6,8 +6,8 @@
   https://opensource.org/licenses/MIT.
 */
 
-import type { Compilation, Compiler } from '@rspack/core'
-import { EntryPlugin, sources } from '@rspack/core'
+import type { Compiler } from '@rspack/core'
+import { Compilation, EntryPlugin, sources } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
 import prettyBytes from 'pretty-bytes'
@@ -93,23 +93,40 @@ class InjectManifest {
             })
         )
 
-        // const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = webpack.Compilation
+        const { PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER } = Compilation
         // Specifically hook into thisCompilation, as per
         // https://github.com/webpack/webpack/issues/11425#issuecomment-690547848
         compiler.hooks.thisCompilation.tap(this.constructor.name, (compilation) => {
-            // https://github.com/web-infra-dev/rspack/issues/5399
-            compilation.hooks.processAssets.stageOptimizeHash.tapPromise(
-                {
-                    name: this.constructor.name
-                    // TODO(jeffposnick): This may need to change eventually.
-                    // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
-                    // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
-                },
-                () =>
-                    this.addAssets(compilation).catch((error: Error) => {
-                        compilation.errors.push(error)
-                    })
-            )
+            // https://github.com/Clarkkkk/workbox-rspack-plugin/issues/2
+            if ('stageOptimizeHash' in compilation.hooks.processAssets) {
+                // https://github.com/web-infra-dev/rspack/issues/5399
+                compilation.hooks.processAssets.stageOptimizeHash.tapPromise(
+                    {
+                        name: this.constructor.name
+                        // TODO(jeffposnick): This may need to change eventually.
+                        // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
+                        // stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
+                    },
+                    () =>
+                        this.addAssets(compilation).catch((error: Error) => {
+                            compilation.errors.push(error)
+                        })
+                )
+            } else {
+                // @ts-expect-error: when @rspack/core => 0.5.7, will be the same as webpack
+                compilation.hooks.processAssets.tapPromise(
+                    {
+                        name: this.constructor.name,
+                        // TODO(jeffposnick): This may need to change eventually.
+                        // See https://github.com/webpack/webpack/issues/11822#issuecomment-726184972
+                        stage: PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER - 10
+                    },
+                    () =>
+                        this.addAssets(compilation).catch((error: Error) => {
+                            compilation.errors.push(error)
+                        })
+                )
+            }
         })
     }
 
