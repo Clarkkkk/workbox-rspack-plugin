@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.3.0    (2024-04-01)
+
+## **Features**
+
+* support rspack 0.5.7 and rsbuild 0.4.15, close [#2](https://github.com/Clarkkkk/workbox-rspack-plugin/issues/2)
+
+
+## **Bug Fixes**
+
+* add @rsbuild/core as peerDependencies and make all peerDependencies optional ([5d5c448f](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/5d5c448f4dde65f07f34396c759868512787c0aa))
+* stageOptimizeHash is undefined ([5cdbc29f](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/5cdbc29f48e3ec29e3f061e8922f9e781e1695e8))
+    
+    ### **Description**
+    
+    https://github.com/Clarkkkk/workbox-rspack-plugin/issues/2
+    
+
+## **Documentation**
+
+* update README ([7925f2d2](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/7925f2d2fc5623c0e7de38495fcdd9a6839d6012))
+
+## **Test**
+
+* fix a failed test due to an irrelevant difference of the output files between rspack and webpack ([60201639](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/60201639ac2876ba1ecd6c6f28d8f1b85371210d))
+* fix failed tests caused by `rspack.CopyRspackPlugin` ([7b867adb](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/7b867adb4601c808a5266e3a0d5e19b5cd6b8739))
+
+## **Chores**
+
+* update README ([227f5760](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/227f57602de31493c6debf8d834dbbb3a224018e))
+* update github actions to node 20 ([a70dfa54](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/a70dfa54b21ea735ccae785d50157818f120981c))
+* remove irrelevant comments ([ab52d7fc](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/ab52d7fc8f60b7aeb10a2ed99a0373a3ca3af68f))
+
+
+
 # 0.2.2    (2024-03-13)
 
 
