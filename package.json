@@ -61,7 +61,16 @@
     "workbox-build": "^7.0.0"
   },
   "peerDependencies": {
-    "@rspack/core": ">=0.5.6"
+    "@rspack/core": ">=0.5.6",
+    "@rsbuild/core": ">=0.4.11"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    },
+    "@rsbuild/core": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@rspack/cli": "^0.5.6",
