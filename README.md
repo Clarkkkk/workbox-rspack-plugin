@@ -55,7 +55,7 @@ If you're using Rsbuild, use it in `tools.rspack.plugins`:
 
 ```js
 import { defineConfig } from '@rsbuild/core'
-import { GenerateSW, InjectManifest } from 'workbox-rspack-plugin'
+import { GenerateSW, InjectManifest } from '@aaroon/workbox-rspack-plugin'
 
 export default defineConfig({
     tools: {

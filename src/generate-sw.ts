@@ -1,6 +1,5 @@
 import { type Compiler } from '@rspack/core'
 import { Compilation, sources } from '@rspack/core'
-import prettyBytes from 'pretty-bytes'
 import type { ManifestEntry, WebpackGenerateSWOptions } from 'workbox-build'
 import { bundle } from 'workbox-build/build/lib/bundle'
 import { populateSWTemplate } from 'workbox-build/build/lib/populate-sw-template'
@@ -178,6 +177,7 @@ class GenerateSW {
         }
 
         if (compilation.getLogger) {
+            const prettyBytes = (await import('pretty-bytes')).default
             const logger = compilation.getLogger(this.constructor.name)
             logger.info(`The service worker at ${config.swDest ?? ''} will precache
         ${config.manifestEntries.length} URLs, totaling ${prettyBytes(size)}.`)

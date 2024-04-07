@@ -10,7 +10,6 @@ import type { Compiler } from '@rspack/core'
 import { Compilation, EntryPlugin, sources } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
-import prettyBytes from 'pretty-bytes'
 import type { WebpackInjectManifestOptions } from 'workbox-build'
 import { escapeRegExp } from 'workbox-build/build/lib/escape-regexp'
 import { replaceAndUpdateSourceMap } from 'workbox-build/build/lib/replace-and-update-source-map'
@@ -339,6 +338,7 @@ class InjectManifest {
         }
 
         if (compilation.getLogger) {
+            const prettyBytes = (await import('pretty-bytes')).default
             const logger = compilation.getLogger(this.constructor.name)
             logger.info(`The service worker at ${config.swDest ?? ''} will precache
         ${sortedEntries.length} URLs, totaling ${prettyBytes(size)}.`)
