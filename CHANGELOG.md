@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.3.1    (2024-04-07)
+
+
+## **Bug Fixes**
+
+* should use dynamic import for pure esm packages, close #4 ([1c325b74](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/1c325b7494cd244286b159a6315c71365aa54a74))
+
+
+
 # 0.3.0    (2024-04-01)
 
 ## **Features**
