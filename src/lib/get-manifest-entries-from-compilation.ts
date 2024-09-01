@@ -7,7 +7,6 @@
 */
 
 import type { Asset, Compilation } from '@rspack/core'
-import { ModuleFilenameHelpers } from '@rspack/core'
 import type { Chunk } from '@rspack/core/dist/Chunk'
 import type {
     FileDetails,
@@ -18,6 +17,7 @@ import type {
 import { transformManifest } from 'workbox-build/build/lib/transform-manifest.js'
 import { getAssetHash } from './get-asset-hash'
 import { resolveWebpackURL } from './resolve-webpack-url'
+import { ModuleFilenameHelpers } from './rspack-utils'
 
 /**
  * For a given asset, checks whether at least one of the conditions matches.

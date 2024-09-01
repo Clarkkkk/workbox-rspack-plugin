@@ -5,9 +5,7 @@
   license that can be found in the LICENSE file or at
   https://opensource.org/licenses/MIT.
 */
-
-import type { Compiler } from '@rspack/core'
-import { Compilation, EntryPlugin, sources } from '@rspack/core'
+import type { Compilation as CompilationType, Compiler } from '@rspack/core'
 import stringify from 'fast-json-stable-stringify'
 import { parse, resolve } from 'pathe'
 import type { WebpackInjectManifestOptions } from 'workbox-build'
@@ -18,11 +16,11 @@ import { extractMessage } from './lib/extract-message'
 import { getManifestEntriesFromCompilation } from './lib/get-manifest-entries-from-compilation'
 import { getSourcemapAssetName } from './lib/get-sourcemap-asset-name'
 import { relativeToOutputPath } from './lib/relative-to-output-path'
+import { Compilation, EntryPlugin, RawSource } from './lib/rspack-utils'
+
 // Used to keep track of swDest files written by *any* instance of this plugin.
 // See https://github.com/GoogleChrome/workbox/issues/2181
 const _generatedAssetNames = new Set<string>()
-
-const { RawSource } = sources
 
 /**
  * This class supports compiling a service worker file provided via `swSrc`,
@@ -136,7 +134,7 @@ class InjectManifest {
      * @private
      */
     async performChildCompilation(
-        compilation: Compilation,
+        compilation: CompilationType,
         parentCompiler: Compiler
     ): Promise<void> {
         const outputOptions = {
@@ -190,7 +188,7 @@ class InjectManifest {
      *
      * @private
      */
-    addSrcToAssets(compilation: Compilation, parentCompiler: Compiler): void {
+    addSrcToAssets(compilation: CompilationType, parentCompiler: Compiler): void {
         // eslint-disable-next-line
         const source = (parentCompiler.inputFileSystem as any).readFileSync(this.config.swSrc)
         compilation.emitAsset(this.config.swDest!, new RawSource(source))
@@ -202,7 +200,7 @@ class InjectManifest {
      *
      * @private
      */
-    async handleMake(compilation: Compilation, parentCompiler: Compiler): Promise<void> {
+    async handleMake(compilation: CompilationType, parentCompiler: Compiler): Promise<void> {
         try {
             this.config = validateWebpackInjectManifestOptions(this.config)
         } catch (error) {
@@ -242,7 +240,7 @@ class InjectManifest {
      *
      * @private
      */
-    async addAssets(compilation: Compilation): Promise<void> {
+    async addAssets(compilation: CompilationType): Promise<void> {
         // See https://github.com/GoogleChrome/workbox/issues/1790
         if (this.alreadyCalled) {
             const warningMessage =

@@ -1,5 +1,4 @@
-import { type Compiler } from '@rspack/core'
-import { Compilation, sources } from '@rspack/core'
+import type { Compilation as CompilationType, Compiler } from '@rspack/core'
 import type { ManifestEntry, WebpackGenerateSWOptions } from 'workbox-build'
 import { bundle } from 'workbox-build/build/lib/bundle.js'
 import { populateSWTemplate } from 'workbox-build/build/lib/populate-sw-template.js'
@@ -7,8 +6,7 @@ import { validateWebpackGenerateSWOptions } from 'workbox-build/build/lib/valida
 import { getManifestEntriesFromCompilation } from './lib/get-manifest-entries-from-compilation'
 import { getScriptFilesForChunks } from './lib/get-script-files-for-chunks'
 import { relativeToOutputPath } from './lib/relative-to-output-path'
-
-const { RawSource } = sources
+import { Compilation, RawSource } from './lib/rspack-utils'
 
 // Used to keep track of swDest files written by *any* instance of this plugin.
 // See https://github.com/GoogleChrome/workbox/issues/2181
@@ -99,7 +97,7 @@ class GenerateSW {
      *
      * @private
      */
-    async addAssets(compilation: Compilation): Promise<void> {
+    async addAssets(compilation: CompilationType): Promise<void> {
         // See https://github.com/GoogleChrome/workbox/issues/1790
         if (this.alreadyCalled) {
             const warningMessage =
