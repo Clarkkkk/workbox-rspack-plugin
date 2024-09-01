@@ -1,6 +1,6 @@
 import type { Compilation } from '@rspack/core'
 import { dirname, join, normalize } from 'pathe'
-import { getSourceMapURL } from 'workbox-build/build/lib/get-source-map-url'
+import { getSourceMapURL } from 'workbox-build/build/lib/get-source-map-url.js'
 
 /**
  * If our bundled swDest file contains a sourcemap, we would invalidate that

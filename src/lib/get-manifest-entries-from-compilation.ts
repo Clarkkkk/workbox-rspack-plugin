@@ -15,7 +15,7 @@ import type {
     WebpackGenerateSWOptions,
     WebpackInjectManifestOptions
 } from 'workbox-build'
-import { transformManifest } from 'workbox-build/build/lib/transform-manifest'
+import { transformManifest } from 'workbox-build/build/lib/transform-manifest.js'
 import { getAssetHash } from './get-asset-hash'
 import { resolveWebpackURL } from './resolve-webpack-url'
 
