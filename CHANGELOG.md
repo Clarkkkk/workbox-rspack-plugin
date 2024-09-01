@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.3.2    (2024-09-01)
+
+
+## **Bug Fixes**
+
+* use `require` to import rspack utilities ([97ffc891](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/97ffc8918ecdf42ff0f926dc94e108fc013e3a8c))
+* should import js file from workbox build with extension ([e8c4497f](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/e8c4497f2db2a557c84539981447d0e4373779bf))
+
+
+
 # 0.3.1    (2024-04-07)
 
 
