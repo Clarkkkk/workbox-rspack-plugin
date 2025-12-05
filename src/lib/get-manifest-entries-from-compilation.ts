@@ -212,7 +212,7 @@ export async function getManifestEntriesFromCompilation(
         return {
             file: resolveWebpackURL(publicPath as string, asset.name),
             hash: getAssetHash(asset),
-            size: asset.source.size() || 0
+            size: asset?.source.size() || 0
         } as FileDetails
     })
 
