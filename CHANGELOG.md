@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 0.3.3    (2026-01-19)
+
+
+## **Chores**
+
+* update GitHub Actions and pnpm configuration ([fb0014ec](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/fb0014ec790ced05e2704781f0460cc2680fa51a))
+* update workbox version ([9d9d9c05](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/9d9d9c05cf339608f314771aa28c23288c58f2d9))
+
+
+
 # 0.3.2    (2024-09-01)
 
 
