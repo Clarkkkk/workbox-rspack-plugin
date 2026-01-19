@@ -1,21 +1,21 @@
 on:
     push:
         branches:
-            - 'main'
+            - "main"
 
 jobs:
     publish:
+        environment: npm
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/checkout@v6
+            - uses: actions/setup-node@v6
               with:
-                  node-version: '20'
-            - uses: pnpm/action-setup@v3
+                  node-version: "24"
+            - uses: pnpm/action-setup@v4
               name: Install pnpm
               id: pnpm-install
               with:
-                  version: 8
                   run_install: false
 
             - name: Get pnpm store directory
@@ -24,7 +24,7 @@ jobs:
               run: |
                   echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-            - uses: actions/cache@v4
+            - uses: actions/cache@v5
               name: Setup pnpm cache
               with:
                   path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
@@ -36,13 +36,12 @@ jobs:
               run: pnpm install
 
             - name: Test
-              run: npm run test
+              run: pnpm run test
 
             - name: Build
-              run: npm run build
+              run: pnpm run build
 
             - name: publish
-              uses: JS-DevTools/npm-publish@v3
+              uses: JS-DevTools/npm-publish@v4
               with:
                   token: ${{ secrets.NPM_TOKEN }}
-                  access: public
