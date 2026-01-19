@@ -1,7 +1,13 @@
+name: Publish Package
+
 on:
     push:
         branches:
             - "main"
+
+permissions:
+    id-token: write # Required for OIDC
+    contents: read
 
 jobs:
     publish:
@@ -42,6 +48,4 @@ jobs:
               run: pnpm run build
 
             - name: publish
-              uses: JS-DevTools/npm-publish@v4
-              with:
-                  token: ${{ secrets.NPM_TOKEN }}
+              run: npm publish --ignore-scripts
