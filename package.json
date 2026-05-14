@@ -61,8 +61,8 @@
     "workbox-build": "^7.4.0"
   },
   "peerDependencies": {
-    "@rspack/core": ">=0.5.6",
-    "@rsbuild/core": ">=0.4.11"
+    "@rspack/core": ">=0.5.6 || ^2.0.0-0",
+    "@rsbuild/core": ">=0.4.11 || ^2.0.0-0"
   },
   "peerDependenciesMeta": {
     "@rspack/core": {
