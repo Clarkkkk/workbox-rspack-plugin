@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 1.0.0    (2026-05-15)
+
+
+## **Features**
+
+* support rspack v2 and refresh compatibility tests ([856c47b1](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/856c47b10c4265c812a0bd48a74b64f99db6758d))
+
+## **Chores**
+
+* update rspack to v2, update all devDependencies, and update eslint config ([0df48059](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/0df48059cc4761ccc91e5c4b95e2d3839558e304))
+    
+    ### **BREAKING CHANGE**
+    
+    - Dropped support for rspack v0.x. Please update to rspack v1 or later.
+    - Dropped support for Node.js v16. Please update to Node.js v18 or later.
+    
+* use OIDC in GitHub Actions workflow for package publishing ([6c861510](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/6c861510541674ffa385fe96d2e5abbcbcaf1916))
+
+
+
 # 0.3.3    (2026-01-19)
 
 

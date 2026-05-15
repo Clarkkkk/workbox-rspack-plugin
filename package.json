@@ -1,7 +1,7 @@
 {
   "name": "@aaroon/workbox-rspack-plugin",
   "description": "An Rspack plugin to use workbox",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "Aaron Zhou",
   "keywords": [
@@ -80,7 +80,7 @@
     "@types/node": "^25.8.0",
     "@vitest/coverage-v8": "^4.1.6",
     "commit-and-tag-version": "^12.7.3",
-    "conventional-changelog-aaron-preset": "^1.1.0",
+    "conventional-changelog-aaron-preset": "^0.3.0",
     "copy-webpack-plugin": "^14.0.0",
     "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
