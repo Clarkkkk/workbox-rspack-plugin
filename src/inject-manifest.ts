@@ -12,7 +12,6 @@ import type { WebpackInjectManifestOptions } from 'workbox-build'
 import { escapeRegExp } from 'workbox-build/build/lib/escape-regexp.js'
 import { replaceAndUpdateSourceMap } from 'workbox-build/build/lib/replace-and-update-source-map.js'
 import { validateWebpackInjectManifestOptions } from 'workbox-build/build/lib/validate-options.js'
-import { extractMessage } from './lib/extract-message'
 import { getManifestEntriesFromCompilation } from './lib/get-manifest-entries-from-compilation'
 import { getSourcemapAssetName } from './lib/get-sourcemap-asset-name'
 import { relativeToOutputPath } from './lib/relative-to-output-path'
@@ -238,7 +237,7 @@ class InjectManifest {
                 ![...compilation.warnings].flat().some((warning) => {
                     return (
                         typeof warning?.message === 'string' &&
-                        extractMessage(warning.message) === warningMessage
+                        warning.message.includes(warningMessage)
                     )
                 })
             ) {
@@ -276,6 +275,11 @@ class InjectManifest {
             )
         }
 
+        const sourcemapAssetName = getSourcemapAssetName(compilation, swAssetString, config.swDest!)
+        if (sourcemapAssetName) {
+            _generatedAssetNames.add(sourcemapAssetName)
+        }
+
         const { size, sortedEntries } = await getManifestEntriesFromCompilation(compilation, config)
 
         let manifestString = stringify(sortedEntries)
@@ -291,10 +295,7 @@ class InjectManifest {
             manifestString = manifestString.replace(/"/g, `'`)
         }
 
-        const sourcemapAssetName = getSourcemapAssetName(compilation, swAssetString, config.swDest!)
-
         if (sourcemapAssetName) {
-            _generatedAssetNames.add(sourcemapAssetName)
             const sourcemapAsset = compilation.getAsset(sourcemapAssetName)
             const { source, map } = await replaceAndUpdateSourceMap({
                 jsFilename: config.swDest!,

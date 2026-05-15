@@ -6,6 +6,6 @@
   https://opensource.org/licenses/MIT.
 */
 
-import { expect } from 'vitest'
+import { join } from 'pathe'
 
-console.log({ expect })
+console.log(join('split', 'chunks'))

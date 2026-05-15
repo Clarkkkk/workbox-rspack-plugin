@@ -5,14 +5,21 @@
 An rspack plugin to use [workbox](https://developer.chrome.com/docs/workbox) in rspack. Both `GenerateSW` and `InjectManifest` are supported. And all the options are the same as the official [`workbox-webpack-plugin`](https://developer.chrome.com/docs/workbox/modules/workbox-webpack-plugin). Currently, it passes all the tests from the official `workbox-webpack-plugin`, and should be stable for general uses. If you find anything wrong, feel free to [open an issue](https://github.com/Clarkkkk/workbox-rspack-plugin/issues).
 
 ## Requirement
+
 ```sh
-@rspack/core@^0.5.6
+node >= 18
+```
+
+And one of the following:
+
+```sh
+@rspack/core@^1.0.0 || ^2.0.0
 ```
 
 Or
 
 ```sh
-@rsbuild/core@^0.4.11
+@rsbuild/core@^1.0.0 || ^2.0.0
 ```
 
 ## Install

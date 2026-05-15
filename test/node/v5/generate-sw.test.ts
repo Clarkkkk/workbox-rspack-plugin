@@ -12,7 +12,7 @@ import CreateWebpackAssetPlugin from './lib/create-webpack-asset-plugin'
 try {
     delete require.cache[require.resolve('html-webpack-plugin')]
     delete require.cache[require.resolve('webpack')]
-} catch (error) {
+} catch {
     // Ignore if require.resolve() fails.
 }
 
@@ -48,7 +48,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             expect(statsJson.warnings?.length).toBeFalsy()
             expect(statsJson.errors).to.have.length(1)
             expect(statsJson.errors![0].message).to.include(
-                `  × Error: Please check your GenerateSW plugin configuration:\n  │ [WebpackGenerateSW] 'invalid' property is not expected to be here. Did you mean property 'include'?`
+                `  × Please check your GenerateSW plugin configuration:\n  │ [WebpackGenerateSW] 'invalid' property is not expected to be here. Did you mean property 'include'?`
             )
         })
     })
@@ -86,11 +86,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -124,11 +124,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
 
             const swFile = join(outputDir, 'service-worker.js')
-            const statsJson = stats.toJson('verbose')
+            const statsJson = stats?.toJson('verbose')
             expect(webpackError).toBeFalsy()
-            expect(statsJson.errors?.length).toBeFalsy()
+            expect(statsJson?.errors?.length).toBeFalsy()
             // There should be a warning logged, due to INVALID_CHUNK_NAME.
-            expect(statsJson.warnings).to.have.length(1)
+            expect(statsJson?.warnings).to.have.length(1)
 
             const files = await globby('**', { cwd: outputDir })
             expect(files).to.have.length(8)
@@ -137,14 +137,14 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 swFile,
                 expectedMethodCalls: {
                     // imported-[chunkhash].js.map should *not* be included.
-                    importScripts: [[/^\.\/workbox-[0-9a-f]{8}$/], [/^imported-[0-9a-f]{20}\.js$/]],
+                    importScripts: [[/^\.\/workbox-[0-9a-f]{8}$/], [/^imported-[0-9a-f]+\.js$/]],
                     // imported-[chunkhash].js should *not* be included.
                     precacheAndRoute: [
                         [
                             [
                                 {
                                     revision: null,
-                                    url: /^main-[0-9a-f]{20}\.js$/
+                                    url: /^main-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -197,11 +197,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
@@ -260,11 +260,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -288,7 +288,8 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 optimization: {
                     minimize: false,
                     splitChunks: {
-                        chunks: 'all'
+                        chunks: 'all',
+                        minSize: 0
                     }
                 },
                 plugins: [
@@ -304,7 +305,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             webpackBuildCheck(webpackError, stats)
 
             const files = await globby('**', { cwd: outputDir })
-            expect(files).to.have.length(5)
+            expect(files).to.have.length(4)
 
             await validateServiceWorkerRuntime({
                 swFile,
@@ -315,11 +316,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^[0-9a-f]{20}\.js$/
+                                    url: /^[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^[0-9a-f]{20}\.js$/
+                                    url: /^[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -366,11 +367,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -418,7 +419,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -462,11 +463,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: /^[0-9a-f]{32}$/,
@@ -497,7 +498,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             // https://github.com/web-infra-dev/rspack/issues/5194#issuecomment-2001579435
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -684,7 +685,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -751,7 +752,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -873,7 +874,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.errors?.length).toBeFalsy()
-            expect(statsJson.warnings[0].message).to.include(
+            expect(statsJson.warnings?.[0].message).to.include(
                 `The chunk 'doesNotExist' was provided in your Workbox chunks config, but was not found in the compilation.`
             )
 
@@ -889,7 +890,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -915,7 +916,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -937,11 +938,11 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             const compiler = rspack(config)
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
             if (webpackError) {
-                throw new Error(webpackError)
+                throw webpackError
             }
 
-            const statsJson = stats.toJson('verbose')
-            expect(statsJson.warnings[0].message).to.include(
+            const statsJson = stats?.toJson('verbose')
+            expect(statsJson?.warnings?.[0].message).to.include(
                 `images/example-jpeg.jpg is 15.3 kB, and won't be precached. Configure maximumFileSizeToCacheInBytes to change this limit.`
             )
 
@@ -959,7 +960,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: /^[0-9a-f]{32}$/,
@@ -1036,7 +1037,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^\/testing\/entry1-[0-9a-f]{20}\.js$/
+                                    url: /^\/testing\/entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1086,7 +1087,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1122,15 +1123,15 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         throw new Error(webpackError.message)
                     }
 
-                    const statsJson = stats.toJson('verbose')
-                    expect(statsJson.errors).to.have.length(0)
+                    const statsJson = stats?.toJson('verbose')
+                    expect(statsJson?.errors).to.have.length(0)
 
                     // There should be a warning logged after the first compilation.
                     // See https://github.com/GoogleChrome/workbox/issues/1790
                     if (i > 1) {
-                        expect(statsJson.warnings).to.have.length(1)
+                        expect(statsJson?.warnings).to.have.length(1)
                     } else {
-                        expect(statsJson.warnings).to.have.length(0)
+                        expect(statsJson?.warnings).to.have.length(0)
                     }
 
                     const files = await globby('**', { cwd: outputDir })
@@ -1138,7 +1139,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
 
                     resolve()
                 } catch (error) {
-                    throw new Error(`Failure during compilation ${i}: ${error}`)
+                    throw new Error(`Failure during compilation ${i}: ${error}`, { cause: error })
                 }
             }
         })
@@ -1311,7 +1312,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                 },
                 plugins: [
                     new GenerateSW({
-                        dontCacheBustURLsMatching: /\.[0-9a-f]{20}\./
+                        dontCacheBustURLsMatching: /\.[0-9a-f]+\./
                     })
                 ]
             } satisfies Configuration
@@ -1332,7 +1333,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         [
                             [
                                 {
-                                    url: /^main\.[0-9a-f]{20}\.js$/,
+                                    url: /^main\.[0-9a-f]+\.js$/,
                                     revision: null
                                 }
                             ],
@@ -1379,7 +1380,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^https:\/\/example\.org\/main\.[0-9a-f]{20}\.js/
+                                    url: /^https:\/\/example\.org\/main\.[0-9a-f]+\.js/
                                 }
                             ],
                             {}
@@ -1404,7 +1405,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                         manifestTransforms: [
                             (manifest, compilation) => {
                                 expect(manifest).to.have.lengthOf(1)
-                                expect(manifest[0].size).to.eql(398)
+                                expect(manifest[0].size).to.eql(53)
                                 expect(manifest[0].url.startsWith('main.')).toBe(true)
                                 expect(manifest[0].revision).toBe(null)
                                 expect(compilation).toBeTruthy()
@@ -1431,7 +1432,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.errors?.length).toBeFalsy()
-            expect(statsJson.warnings[0].message).to.include(warningMessage)
+            expect(statsJson.warnings?.[0].message).to.include(warningMessage)
 
             const files = await globby('**', { cwd: outputDir })
             expect(files).to.have.length(3)
@@ -1445,7 +1446,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
                             [
                                 {
                                     revision: null,
-                                    url: /^main\.[0-9a-f]{20}\.js-suffix$/
+                                    url: /^main\.[0-9a-f]+\.js-suffix$/
                                 }
                             ],
                             {}

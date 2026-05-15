@@ -21,7 +21,7 @@ import CreateWebpackAssetPlugin from './lib/create-webpack-asset-plugin'
 try {
     delete require.cache[require.resolve('html-webpack-plugin')]
     delete require.cache[require.resolve('webpack')]
-} catch (error) {
+} catch {
     // Ignore if require.resolve() fails.
 }
 
@@ -57,8 +57,8 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.warnings?.length).toBeFalsy()
-            expect(statsJson.errors[0].message).include(
-                `  × Error: Please check your InjectManifest plugin configuration:\n  │ [WebpackInjectManifest] 'invalid' property is not expected to be here. Did you mean property 'include'?`
+            expect(statsJson.errors?.[0].message).include(
+                `  × Please check your InjectManifest plugin configuration:\n  │ [WebpackInjectManifest] 'invalid' property is not expected to be here. Did you mean property 'include'?`
             )
         })
 
@@ -85,7 +85,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.warnings?.length).toBeFalsy()
-            expect(statsJson.errors[0].message).include(
+            expect(statsJson.errors?.[0].message).include(
                 `Multiple instances of self.__WB_MANIFEST were found in your SW source. Include it only once. For more info, see https://github.com/GoogleChrome/workbox/issues/2681`
             )
         })
@@ -129,11 +129,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -182,11 +182,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -210,7 +210,8 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                 optimization: {
                     minimize: false,
                     splitChunks: {
-                        chunks: 'all'
+                        chunks: 'all',
+                        minSize: 0
                     }
                 },
                 plugins: [
@@ -228,7 +229,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             webpackBuildCheck(webpackError, stats)
 
             const files = await globby('**', { cwd: outputDir })
-            expect(files).to.have.length(4)
+            expect(files).to.have.length(3)
 
             await validateServiceWorkerRuntime({
                 swFile,
@@ -239,11 +240,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^[0-9a-f]{20}\.js$/
+                                    url: /^[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^[0-9a-f]{20}\.js$/
+                                    url: /^[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -292,11 +293,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -346,7 +347,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -396,11 +397,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: null,
-                                    url: /^entry2-[0-9a-f]{20}\.js$/
+                                    url: /^entry2-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: /^[0-9a-f]{32}$/,
@@ -430,7 +431,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -535,17 +536,22 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
 
             const files = await globby('**', { cwd: outputDir })
             expect(files).to.have.length(4)
+            expect(files).to.include('service-worker.js.map')
 
             const expectedSourcemap = await fse.readJSON(
                 join(__dirname, 'static', 'expected-service-worker.js.map')
             )
             const actualSourcemap = await fse.readJSON(join(outputDir, 'service-worker.js.map'))
+            const swContents = await fse.readFile(swFile, 'utf8')
 
             // The mappings will vary depending on the webpack version.
-            delete expectedSourcemap.mappings
             delete actualSourcemap.mappings
 
-            expect(actualSourcemap).to.eql(expectedSourcemap)
+            expect(swContents).to.include('//# sourceMappingURL=service-worker.js.map')
+            expect(actualSourcemap.file).to.eql(expectedSourcemap.file)
+            expect(actualSourcemap.names).to.eql(expectedSourcemap.names)
+            expect(actualSourcemap.sources).to.eql(expectedSourcemap.sources)
+            expect(actualSourcemap.sourcesContent).to.eql(expectedSourcemap.sourcesContent)
 
             await validateServiceWorkerRuntime({
                 swFile,
@@ -594,6 +600,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
 
             const files = await globby('**', { cwd: outputDir })
             expect(files).to.have.length(4)
+            expect(files).to.include(join('subdir', 'service-worker.js.map'))
 
             const expectedSourcemap = await fse.readJSON(
                 join(__dirname, 'static', 'expected-service-worker.js.map')
@@ -601,12 +608,16 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             const actualSourcemap = await fse.readJSON(
                 join(outputDir, 'subdir', 'service-worker.js.map')
             )
+            const swContents = await fse.readFile(swFile, 'utf8')
 
             // The mappings will vary depending on the webpack version.
-            delete expectedSourcemap.mappings
             delete actualSourcemap.mappings
 
-            expect(actualSourcemap).to.eql(expectedSourcemap)
+            expect(swContents).to.include('//# sourceMappingURL=subdir/service-worker.js.map')
+            expect(actualSourcemap.file).to.eql(expectedSourcemap.file)
+            expect(actualSourcemap.names).to.eql(expectedSourcemap.names)
+            expect(actualSourcemap.sources).to.eql(expectedSourcemap.sources)
+            expect(actualSourcemap.sourcesContent).to.eql(expectedSourcemap.sourcesContent)
 
             await validateServiceWorkerRuntime({
                 swFile,
@@ -690,12 +701,9 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                     minimize: true,
                     minimizer: [
                         new rspack.SwcJsMinimizerRspackPlugin({
-                            exclude: ['splitChunksEntry.js'],
-                            format: {
-                                comments: 'all'
-                            }
+                            exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -880,7 +888,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -949,7 +957,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -1075,7 +1083,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.errors?.length).toBeFalsy()
-            expect(statsJson.warnings[0].message).include(
+            expect(statsJson.warnings?.[0].message).include(
                 `The chunk 'doesNotExist' was provided in your Workbox chunks config, but was not found in the compilation.`
             )
 
@@ -1091,7 +1099,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1117,7 +1125,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         new rspack.SwcJsMinimizerRspackPlugin({
                             exclude: ['splitChunksEntry.js']
                         }),
-                        new rspack.SwcCssMinimizerRspackPlugin()
+                        new rspack.LightningCssMinimizerRspackPlugin()
                     ]
                 },
                 plugins: [
@@ -1142,7 +1150,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             const [webpackError, stats] = await runWithCallback(compiler.run.bind(compiler))
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson('verbose')
-            expect(statsJson.warnings[0].message).include(
+            expect(statsJson.warnings?.[0].message).include(
                 `images/example-jpeg.jpg is 15.3 kB, and won't be precached. Configure maximumFileSizeToCacheInBytes to change this limit.`
             )
 
@@ -1160,7 +1168,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^entry1-[0-9a-f]{20}\.js$/
+                                    url: /^entry1-[0-9a-f]+\.js$/
                                 },
                                 {
                                     revision: /^[0-9a-f]{32}$/,
@@ -1242,7 +1250,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^\/testing\/entry1-[0-9a-f]{20}\.js$/
+                                    url: /^\/testing\/entry1-[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1267,7 +1275,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                     new InjectManifest({
                         swSrc: SW_SRC,
                         swDest: 'service-worker.js',
-                        dontCacheBustURLsMatching: /\.[0-9a-f]{20}\./
+                        dontCacheBustURLsMatching: /\.[0-9a-f]+\./
                     })
                 ]
             } satisfies Configuration
@@ -1288,7 +1296,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         [
                             [
                                 {
-                                    url: /^main\.[0-9a-f]{20}\.js$/,
+                                    url: /^main\.[0-9a-f]+\.js$/,
                                     revision: null
                                 }
                             ],
@@ -1337,7 +1345,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^https:\/\/example\.org\/main\.[0-9a-f]{20}\.js/
+                                    url: /^https:\/\/example\.org\/main\.[0-9a-f]+\.js/
                                 }
                             ],
                             {}
@@ -1388,7 +1396,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^main\.[0-9a-f]{20}\.js$/
+                                    url: /^main\.[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1415,7 +1423,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                         manifestTransforms: [
                             (manifest, compilation) => {
                                 expect(manifest).to.have.lengthOf(1)
-                                expect(manifest[0].size).to.eql(398)
+                                expect(manifest[0].size).to.eql(53)
                                 expect(manifest[0].url.startsWith('main.')).toBeTruthy()
                                 expect(manifest[0].revision).toBe(null)
                                 expect(compilation).toBeTruthy()
@@ -1442,7 +1450,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.errors?.length).toBeFalsy()
-            expect(statsJson.warnings[0].message).include(warningMessage)
+            expect(statsJson.warnings?.[0].message).include(warningMessage)
 
             const files = await globby('**', { cwd: outputDir })
             expect(files).to.have.length(2)
@@ -1456,7 +1464,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^main.[0-9a-f]{20}\.js-suffix$/
+                                    url: /^main.[0-9a-f]+\.js-suffix$/
                                 }
                             ],
                             {}
@@ -1536,7 +1544,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
 
                     resolve()
                 } catch (error) {
-                    throw new Error(`Failure during compilation ${i}: ${error}`)
+                    throw new Error(`Failure during compilation ${i}: ${error}`, { cause: error })
                 }
             }
         })
@@ -1586,7 +1594,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
 
                     resolve()
                 } catch (error) {
-                    throw new Error(`Failure during compilation ${i}: ${error}`)
+                    throw new Error(`Failure during compilation ${i}: ${error}`, { cause: error })
                 }
             }
         })
@@ -1636,7 +1644,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^main\.[0-9a-f]{20}\.js$/
+                                    url: /^main\.[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1654,7 +1662,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^main\.[0-9a-f]{20}\.js$/
+                                    url: /^main\.[0-9a-f]+\.js$/
                                 }
                             ],
                             {}
@@ -1691,7 +1699,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             webpackBuildCheck(webpackError, stats)
 
             const files = await globby('**', { cwd: outputDir })
-            expect(files).to.have.length(2)
+            expect(files).to.have.length(4)
+            expect(files).to.include(`sw.js`)
+            expect(files).to.include(`sw.js.map`)
+            expect(files.some((file) => /^main\.[0-9a-f]+\.js$/.test(file))).toBe(true)
+            expect(files.some((file) => /^main\.[0-9a-f]+\.js\.map$/.test(file))).toBe(true)
 
             await validateServiceWorkerRuntime({
                 swFile,
@@ -1702,7 +1714,11 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
                             [
                                 {
                                     revision: null,
-                                    url: /^main\.[0-9a-f]{20}\.js$/
+                                    url: /^main\.[0-9a-f]+\.js$/
+                                },
+                                {
+                                    revision: /^[0-9a-f]{32}$/,
+                                    url: /^main\.[0-9a-f]+\.js\.map$/
                                 }
                             ],
                             {}
@@ -1739,7 +1755,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.errors?.length).toBeFalsy()
-            expect(statsJson.warnings[0].message).include(
+            expect(statsJson.warnings?.[0].message).include(
                 'compileSrc is false, so the webpackCompilationPlugins option will be ignored.'
             )
         })
@@ -1774,7 +1790,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(manifest).toEqual([
                 {
                     revision: null,
-                    url: /^main\.[0-9a-f]{20}\.js$/
+                    url: /^main\.[0-9a-f]+\.js$/
                 }
             ])
         })
@@ -1809,7 +1825,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(manifest).toEqual([
                 {
                     revision: null,
-                    url: /^main\.[0-9a-f]{20}\.js$/
+                    url: /^main\.[0-9a-f]+\.js$/
                 }
             ])
         })
