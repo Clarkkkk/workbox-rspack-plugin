@@ -7,7 +7,7 @@
 */
 
 import type { Asset, Compilation } from '@rspack/core'
-import type { Chunk } from '@rspack/core/dist/Chunk'
+import type { Chunk } from '@rspack/core'
 import type {
     FileDetails,
     ManifestEntry,
@@ -34,10 +34,7 @@ function checkConditions(
     asset: Asset,
     compilation: Compilation,
 
-    conditions: Array<
-        // eslint-disable-next-line @typescript-eslint/ban-types
-        string | RegExp | ((arg0: any) => boolean)
-    > = []
+    conditions: Array<string | RegExp | ((arg0: any) => boolean)> = []
 ): boolean {
     for (const condition of conditions) {
         if (typeof condition === 'function') {

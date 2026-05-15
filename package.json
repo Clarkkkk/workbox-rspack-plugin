@@ -21,14 +21,14 @@
   "bugs": {
     "url": "https://github.com/Clarkkkk/workbox-rspack-plugin/issues"
   },
-  "packageManager": "pnpm@8.6.3",
+  "packageManager": "pnpm@10.33.4",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
   "sideEffects": false,
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "dist"
@@ -49,7 +49,7 @@
     "test:run": "vitest --run --changed",
     "test:coverage": "vitest --coverage",
     "typecheck": "tsc --noEmit --watch --preserveWatchOutput",
-    "format": "eslint --fix --cache src/**/*.{vue,ts}",
+    "format": "eslint --fix --cache src/**/*.ts",
     "prepare": "husky install",
     "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky",
     "release": "commit-and-tag-version"
@@ -61,8 +61,8 @@
     "workbox-build": "^7.4.0"
   },
   "peerDependencies": {
-    "@rspack/core": ">=0.5.6",
-    "@rsbuild/core": ">=0.4.11"
+    "@rsbuild/core": "^1.0.0 || ^2.0.0",
+    "@rspack/core": "^1.0.0 || ^2.0.0"
   },
   "peerDependenciesMeta": {
     "@rspack/core": {
@@ -73,39 +73,40 @@
     }
   },
   "devDependencies": {
-    "@rspack/cli": "^0.5.6",
-    "@rspack/core": "^0.5.6",
-    "@types/jsdom": "^21.1.6",
-    "@types/node": "^20.11.20",
-    "@typescript-eslint/eslint-plugin": "^7.0.2",
-    "@typescript-eslint/parser": "^7.0.2",
-    "@vitest/coverage-v8": "^1.3.1",
-    "commit-and-tag-version": "^12.2.0",
-    "conventional-changelog-aaron-preset": "^0.2.3",
-    "copy-webpack-plugin": "^12.0.2",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@eslint/js": "^10.0.1",
+    "@rspack/cli": "^2.0.3",
+    "@rspack/core": "^2.0.3",
+    "@types/jsdom": "^28.0.3",
+    "@types/node": "^25.8.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "commit-and-tag-version": "^12.7.3",
+    "conventional-changelog-aaron-preset": "^1.1.0",
+    "copy-webpack-plugin": "^14.0.0",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-simple-import-sort": "^12.0.0",
-    "fs-extra": "^11.2.0",
-    "globby": "^14.0.1",
-    "html-webpack-plugin": "^5.6.0",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "memfs": "^4.7.7",
-    "module-alias": "^2.2.3",
-    "prettier": "^3.2.5",
-    "rollup-plugin-node-externals": "^7.0.1",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
+    "fs-extra": "^11.3.5",
+    "globals": "^17.6.0",
+    "globby": "^16.2.0",
+    "html-webpack-plugin": "^5.6.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.4",
+    "memfs": "^4.57.2",
+    "module-alias": "^2.3.4",
+    "prettier": "^3.8.3",
+    "rollup-plugin-node-externals": "^9.0.1",
     "service-worker-mock": "^2.0.5",
-    "tempy": "^3.1.0",
+    "tempy": "^3.2.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
-    "vite": "^5.1.4",
-    "vite-bundle-visualizer": "^1.0.1",
-    "vite-plugin-dts": "^3.7.3",
-    "vitest": "^1.3.1",
-    "webpack": "^5.90.3",
-    "workbox-precaching": "^7.4.0"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3",
+    "vite": "^8.0.13",
+    "vite-bundle-visualizer": "^1.2.1",
+    "vite-plugin-dts": "^5.0.0",
+    "vitest": "^4.1.6",
+    "webpack": "^5.106.2",
+    "workbox-precaching": "^7.4.1"
   }
 }
