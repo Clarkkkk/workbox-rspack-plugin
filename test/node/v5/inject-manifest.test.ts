@@ -14,6 +14,9 @@ import {
 } from '../../utils'
 import CreateWebpackAssetPlugin from './lib/create-webpack-asset-plugin'
 
+// eslint-disable-next-line no-control-regex
+const stripAnsi = (value: string) => value.replace(/\u001B\[[0-9;]*m/g, '')
+
 // workbox-webpack-plugin needs to do require('webpack'), and in order to test
 // against multiple webpack versions, we need that to resolve to whatever the
 // correct webpack is for this test.
@@ -57,7 +60,7 @@ describe(`[workbox-webpack-plugin] InjectManifest with webpack v5`, function () 
             expect(webpackError).toBeFalsy()
             const statsJson = stats!.toJson()
             expect(statsJson.warnings?.length).toBeFalsy()
-            expect(statsJson.errors?.[0].message).include(
+            expect(stripAnsi(statsJson.errors?.[0].message ?? '')).include(
                 `  × Please check your InjectManifest plugin configuration:\n  │ [WebpackInjectManifest] 'invalid' property is not expected to be here. Did you mean property 'include'?`
             )
         })

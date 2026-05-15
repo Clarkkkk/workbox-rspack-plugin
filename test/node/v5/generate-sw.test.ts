@@ -9,6 +9,9 @@ import { GenerateSW } from '../../../src/generate-sw'
 import { runWithCallback, validateServiceWorkerRuntime, webpackBuildCheck } from '../../utils'
 import CreateWebpackAssetPlugin from './lib/create-webpack-asset-plugin'
 
+// eslint-disable-next-line no-control-regex
+const stripAnsi = (value: string) => value.replace(/\u001B\[[0-9;]*m/g, '')
+
 try {
     delete require.cache[require.resolve('html-webpack-plugin')]
     delete require.cache[require.resolve('webpack')]
@@ -47,7 +50,7 @@ describe(`[workbox-webpack-plugin] GenerateSW with webpack v5`, function () {
             const statsJson = stats!.toJson()
             expect(statsJson.warnings?.length).toBeFalsy()
             expect(statsJson.errors).to.have.length(1)
-            expect(statsJson.errors![0].message).to.include(
+            expect(stripAnsi(statsJson.errors![0].message)).to.include(
                 `  × Please check your GenerateSW plugin configuration:\n  │ [WebpackGenerateSW] 'invalid' property is not expected to be here. Did you mean property 'include'?`
             )
         })
