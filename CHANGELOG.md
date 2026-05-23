@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# 1.0.1    (2026-05-23)
+
+
+## **Bug Fixes**
+
+* fix CJS config loading regressions ([16a6f181](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/16a6f1810bdb88ed5391c6066f0ba3a0ab80d142))
+* add stripAnsi utility for error message formatting in tests ([0c28760c](https://github.com/Clarkkkk/workbox-rspack-plugin/commit/0c28760c4fedf41ea5a0133bb76e2b042487fdd5))
+
+
+
 # 1.0.0    (2026-05-15)
 
 

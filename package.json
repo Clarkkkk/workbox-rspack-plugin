@@ -1,7 +1,7 @@
 {
   "name": "@aaroon/workbox-rspack-plugin",
   "description": "An Rspack plugin to use workbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": "Aaron Zhou",
   "keywords": [
