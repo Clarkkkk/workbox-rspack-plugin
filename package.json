@@ -45,6 +45,7 @@
     "build": "tsc && vite build",
     "analyze": "vite-bundle-visualizer",
     "test": "vitest",
+    "test:dist": "node test/node/cjs-config-smoke.mjs",
     "test:update": "vitest --update",
     "test:run": "vitest --run --changed",
     "test:coverage": "vitest --coverage",

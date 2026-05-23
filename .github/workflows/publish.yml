@@ -47,5 +47,8 @@ jobs:
             - name: Build
               run: pnpm run build
 
+            - name: Test built package
+              run: pnpm run test:dist
+
             - name: publish
               run: npm publish --ignore-scripts
